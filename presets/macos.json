@@ -1,0 +1,27 @@
+{
+  "theme": {
+    "mode": "system",
+    "light": "macOS Glass Light",
+    "dark": "macOS Glass Dark"
+  },
+  "icon_theme": "Zed (Default)",
+  "ui_font_family": ".SystemUIFont",
+  "ui_font_size": 16,
+  "ui_font_weight": 400,
+  "buffer_font_family": "Menlo",
+  "buffer_font_size": 15,
+  "buffer_font_weight": 400,
+  "buffer_line_height": "standard",
+  "agent_ui_font_family": ".SystemUIFont",
+  "agent_buffer_font_family": "Menlo",
+  "mermaid_font_family": ".SystemUIFont",
+  "markdown_preview": {
+    "font_family": ".SystemUIFont",
+    "code_font_family": "Menlo"
+  },
+  "terminal": {
+    "font_family": "Menlo",
+    "font_size": 14,
+    "line_height": "standard"
+  }
+}

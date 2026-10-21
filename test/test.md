@@ -1,13 +1,11 @@
-# macOS Classic Theme for Zed
+# macOS Glass for Zed
 
-A macOS native style theme for [Zed](https://zed.dev), let it same like native app in macOS.
-
-See also: [macOS Classic Theme for VS Code](https://marketplace.visualstudio.com/items?itemName=huacnlee.theme-macos-classic)
+A macOS 27 Liquid Glass-inspired theme for [Zed](https://zed.dev).
 
 ## Features
 
 - Light and Dark mode
-- macOS native style
+- Translucent chrome and opaque code surfaces
 
 ## Usage
 
@@ -19,8 +17,8 @@ Open your Zed user settings.json: `~/.config/zed/settings.json`, and add this co
 {
   "theme": {
     "mode": "system",
-    "light": "macOS Classic Light",
-    "dark": "macOS Classic Dark"
+    "light": "macOS Glass Light",
+    "dark": "macOS Glass Dark"
   }
 }
 ```

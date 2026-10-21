@@ -1,16 +1,16 @@
-on:
-  push:
-    tags:
-      - "v*"
+name: Validate themes
+
+on: [push, pull_request]
+
+permissions:
+  contents: read
 
 jobs:
-  homebrew:
-    name: Release Zed Extension
+  validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: huacnlee/zed-extension-action@v1
-        with:
-          extension-name: macos-classic
-          push-to: huacnlee/zed-extensions
-        env:
-          COMMITTER_TOKEN: ${{ secrets.COMMITTER_TOKEN }}
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - uses: astral-sh/setup-uv@v6
+      - run: bun test
+      - run: uvx --from check-jsonschema check-jsonschema --schemafile https://zed.dev/schema/themes/v0.2.0.json themes/*.json

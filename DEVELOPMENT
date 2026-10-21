@@ -1,20 +1,36 @@
 # Development
 
-## Edit theme
+Install this checkout with Zed's `zed: install dev extension` command. Edit files
+in `themes/`. If changes do not appear, run `zed: reload extensions` from the
+command palette. If title or status bars retain stale colors, run
+`workspace: reload`; this was required during macOS 27 visual review.
+Do not edit the installed copy of another extension.
 
-You can edit the installed theme for development.
+## Validation
 
-```bash
-$ zed ~/Library/Application\ Support/Zed/extensions/installed/macos-classic/
+```sh
+bun test
+uvx --from check-jsonschema check-jsonschema --schemafile https://zed.dev/schema/themes/v0.2.0.json themes/*.json
 ```
 
-When you modifed the theme, Zed will reload the theme automatically.
+The Bun tests check color syntax, paired appearances, opaque content surfaces,
+syntax contrast (including cursor selections), chrome contrast over black/white
+backdrops, focus visibility, and terminal color semantics. Schema validation needs
+network access. Neither check proves native rendering or accessibility behavior.
 
-After you finish the development, you can copy the `macos-classic.json` contents to this project.
+## Visual review
 
-## Release Extension
+Select each Glass appearance and inspect `test/test.js`, `test/test.c`, and
+`test/test.md`. These are intentionally imperfect visual fixtures, not test suites.
+Check the project panel, tabs, command palette, search results, diagnostics,
+terminal ANSI colors, keyboard focus, and an inactive window. Compare light and
+dark wallpapers, then test the README's opaque override. Verify system Reduce
+Transparency and Increase Contrast behavior in the installed Zed version.
 
-1. Update version in `extension.toml`.
-2. Create a tag with the version number.
-3. Push the tag to the repository, then the GitHub Actions will make PR to [Zed extensions](https://github.com/zed-industries/extensions).
-4. Wait for the PR to be merged, then the new version will be released.
+## Release
+
+Version 0.5.0 is the local macOS Glass release under adeze's maintenance.
+The extension ID is `macos-glass`; repository metadata points to this project.
+CI validates themes only. The inherited workflow that opened release PRs against
+the original author's extension repository has been removed. Publishing to the
+Zed registry requires a separate, explicit release process.
