@@ -93,30 +93,34 @@ Run the registry's documented sorting and validation tasks. Review the gitlink,
 only. Zed publishes after that PR is accepted and merged. No upload archive,
 npm package, Rust crate, or WebAssembly binary is needed for this theme.
 
-## Draft PR
+## Human registry submission
 
-Title: `Add macOS Glass theme v0.5.0`
+Zed's [AI policy](https://github.com/zed-industries/extensions/blob/main/AI_POLICY.md)
+requires human-written maintainer communication, including the PR body, and
+prohibits autonomous agent contributions. The previous generated PR draft has
+been removed. The maintainer must review the branch and open the upstream PR
+with a description in their own words; do not copy generated prose into it.
 
-Body:
+Prepared registry branch:
+`adeze/dataform-language-extension:codex/add-macos-glass-theme-0-5-0`.
+This existing repository is a fork of `zed-industries/extensions`; its existing
+branches are unchanged. The new branch changes only `.gitmodules`,
+`extensions.toml`, and the `extensions/macos-glass-theme` gitlink.
 
-> Adds macOS Glass Light and Dark: macOS 27 Liquid Glass-inspired palettes with
-> translucent chrome, layered tabs, blue accents, and opaque editing surfaces.
-> These are custom palettes maintained by adeze; Classic themes are not bundled.
->
-> The extension uses Zed's existing blur support, not native Liquid Glass
-> refraction. The README documents the reported macOS 27 blur limitation and an
-> opaque fallback. An optional macOS font preset is documented for manual use.
->
-> License: MIT; derived from Jason Lee's macOS Classic with attribution retained.
-> Local preparation checks passed: Bun tests and official theme JSON schema.
+Release source: `a7e05cff5f7cfb7d63f1b7bb56dbe20cb4eff32e`, tagged `v0.5.0`.
+Seven theme tests and official JSON schema validation passed. The registry's
+TypeScript build and manifest, license, version, URL, and submodule-location
+validators passed locally. Final upstream packaging CI has not run because no
+upstream PR has been opened by the agent.
 
-Before sending, add the actual release commit and its manual verification
-results to the draft. Do not claim unperformed checks.
+Facts to explain in your own submission: the two custom palettes, manual review,
+MIT attribution, optional font preset, and native blur/refraction limitations.
 
 ## Sources
 
 - [Zed publishing guide](https://zed.dev/docs/extensions/publishing/publishing-guide).
 - [Publishing prerequisites](https://zed.dev/docs/extensions/publishing/prerequisites).
 - [Accepted licenses](https://zed.dev/docs/extensions/publishing/license-requirements).
+- [AI contribution policy](https://github.com/zed-industries/extensions/blob/main/AI_POLICY.md).
 
 Checked 22 October 2026. No external submission is automated by this repository.
