@@ -28,6 +28,7 @@ test("release manifest and registry submission agree on identity and version", a
   expect(manifest.authors).toEqual([families[0].author]);
   expect(manifest.repository).toBe("https://github.com/adeze/zed-theme-macos-glass");
   expect(manifest.description).toBeTruthy();
+  expect(await Bun.file(new URL("../CHANGELOG.md", import.meta.url)).text()).toContain(`## ${manifest.version} —`);
   expect(registry).toEqual({
     [manifest.id]: { submodule: `extensions/${manifest.id}`, version: manifest.version },
   });

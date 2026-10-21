@@ -129,7 +129,8 @@ Its native Liquid Glass section outlines the GPUI/AppKit work a custom Zed build
 would need; that work is proposed, not implemented by this extension.
 Theme files use [Zed's current v0.2.0 schema](https://zed.dev/schema/themes/v0.2.0.json).
 Registry submission materials are in [publishing/submission.md](publishing/submission.md).
-This checkout is prepared for submission; it is not yet published to the registry.
+See [CHANGELOG.md](CHANGELOG.md) for release notes.
+Registry availability depends on acceptance and merge of the Zed submission PR.
 
 ## Credits and license
 

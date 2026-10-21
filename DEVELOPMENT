@@ -103,5 +103,8 @@ The extension ID is `macos-glass-theme`; repository metadata points to this proj
 The earlier local ID was `macos-glass`. Reinstall the development extension when
 testing this manifest so Zed registers the new ID; appearance names are unchanged.
 CI validates the theme, preset, and submission metadata; it does not publish.
+The `Validate release` workflow runs on pushes and pull requests and can also be
+started manually from GitHub Actions once the workflow is on the default branch.
+Keep `CHANGELOG.md`, `extension.toml`, and `publishing/registry-entry.toml` aligned.
 Follow [publishing/submission.md](publishing/submission.md) only after release is
 explicitly authorized. Creating a tag alone does not publish this extension.
