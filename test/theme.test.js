@@ -18,6 +18,22 @@ const luminance = channels => channels.map(channel => channel <= 0.04045
 const contrast = (a, b) => (Math.max(luminance(a), luminance(b)) + 0.05)
   / (Math.min(luminance(a), luminance(b)) + 0.05);
 
+test("release manifest and registry submission agree on identity and version", async () => {
+  const manifest = Bun.TOML.parse(await Bun.file(new URL("../extension.toml", import.meta.url)).text());
+  const registry = Bun.TOML.parse(await Bun.file(new URL("../publishing/registry-entry.toml", import.meta.url)).text());
+  expect(manifest.id).toBe("macos-glass-theme");
+  expect(manifest.schema_version).toBe(1);
+  expect(manifest.name).toBe(families[0].name);
+  expect(manifest.version).toMatch(/^\d+\.\d+\.\d+$/);
+  expect(manifest.authors).toEqual([families[0].author]);
+  expect(manifest.repository).toBe("https://github.com/adeze/zed-theme-macos-glass");
+  expect(manifest.description).toBeTruthy();
+  expect(registry).toEqual({
+    [manifest.id]: { submodule: `extensions/${manifest.id}`, version: manifest.version },
+  });
+  expect(await Bun.file(new URL("../LICENSE", import.meta.url)).text()).toContain("MIT License");
+});
+
 test("macOS preset selects shipped themes and system fonts without extra dependencies", async () => {
   const preset = await Bun.file(new URL("../presets/macos.json", import.meta.url)).json();
   const names = families.flatMap(family => family.themes.map(theme => theme.name));

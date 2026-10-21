@@ -42,7 +42,14 @@ For automatic appearance switching, merge this into Zed's user `settings.json`:
 }
 ```
 
-The extension ID is `macos-glass`. Only **macOS Glass Light** and
+With `"mode": "system"`, Zed selects the Light or Dark palette as macOS changes
+appearance, including macOS's scheduled Auto appearance changes. Installing the
+theme alone does not enable this setting. Choosing a fixed light/dark mode pins
+that appearance until system mode is restored. The theme does not automatically
+change opacity, accent colors, or accessibility settings with the system.
+See [Zed's appearance selection](https://zed.dev/docs/themes#configuring-a-theme).
+
+The extension ID is `macos-glass-theme`. Only **macOS Glass Light** and
 **macOS Glass Dark** are included. If migrating from macOS Classic, replace its
 theme names in your settings with the Glass names above.
 
@@ -76,6 +83,17 @@ dark tint. Title and status bars, editor, terminal, and popovers remain opaque.
 Blur availability and system accessibility behavior depend on Zed and the
 platform; this theme cannot detect Reduce Transparency or Increase Contrast.
 
+These are deliberately restrained defaults, not Apple's prescribed opacity
+values: roughly 14% of the backdrop contributes to the light window tint and
+20% to the dark tint before Zed's material and compositing behavior. Transparent
+child surfaces inherit that background; they are not completely transparent
+windows. Code remains solid. Both appearances were visually reviewed with the
+macOS font preset, and tests check label contrast over simulated black and white
+backdrops. Wallpaper, display, and renderer differences still warrant a visual
+check. Keep the defaults if they are comfortable; use the opaque option below if
+background detail distracts. More transparency is not inherently more faithful
+to Liquid Glass or more readable.
+
 For an explicitly opaque appearance, merge these overrides into user settings:
 
 ```json
@@ -107,7 +125,11 @@ sharp or distracting, use the opaque override above.
 ## Development
 
 See [DEVELOPMENT](DEVELOPMENT) for validation and visual checks.
+Its native Liquid Glass section outlines the GPUI/AppKit work a custom Zed build
+would need; that work is proposed, not implemented by this extension.
 Theme files use [Zed's current v0.2.0 schema](https://zed.dev/schema/themes/v0.2.0.json).
+Registry submission materials are in [publishing/submission.md](publishing/submission.md).
+This checkout is prepared for submission; it is not yet published to the registry.
 
 ## Credits and license
 

@@ -27,10 +27,81 @@ terminal ANSI colors, keyboard focus, and an inactive window. Compare light and
 dark wallpapers, then test the README's opaque override. Verify system Reduce
 Transparency and Increase Contrast behavior in the installed Zed version.
 
+## Native Liquid Glass on macOS 27 — proposed GPUI work
+
+This is an implementation outline for a separate Zed/GPUI change, not a feature
+of this theme. The current extension supplies colors and requests whole-window
+blur. It cannot insert native views, change layout geometry, or install shaders.
+Full native glass currently requires a custom Zed build or an upstream change;
+there is no theme-extension rendering hook to enable it.
+
+### Existing boundary
+
+Zed's macOS backend implements `set_background_appearance` by adjusting renderer
+transparency and adding/removing a native blur view beneath its GPUI view. That
+whole-window backdrop is distinct from per-control Liquid Glass. See the
+[macOS window backend](https://github.com/zed-industries/zed/blob/main/crates/gpui_macos/src/window.rs).
+
+Apple provides [`NSGlassEffectView`](https://developer.apple.com/documentation/appkit/nsglasseffectview),
+introduced in macOS 26 and available on macOS 27. A macOS 27-only API or a SwiftUI
+rewrite is not required to investigate native glass: Rust can call AppKit through
+Objective-C bindings. Use an SDK exposing the APIs, compatible bindings, and
+runtime availability checks; preserve the existing path on unsupported systems.
+
+### Smallest useful prototype
+
+1. Add one opt-in native glass toolbar region in the macOS backend. Keep editor,
+   terminal, and reading surfaces opaque. Define its bounds, clipping, lifetime,
+   appearance, and relationship to `NSWindow` and its content view.
+2. Prove native/Metal composition before expanding the design. Arbitrary GPUI
+   elements are drawn content, not independently hosted AppKit views; wrapping
+   the entire GPUI canvas in a glass view does not give each toolbar or sidebar
+   its own material. Establish how the intended backdrop reaches the native
+   effect, how foreground content stays above it, and how overlapping regions
+   are ordered. This may require separate native content hosts or changes to
+   GPUI composition; the workable bridge remains to be prototyped. Follow Apple's
+   [`contentView` contract](https://developer.apple.com/documentation/appkit/nsglasseffectview/contentview).
+3. Synchronize GPUI layout with native view bounds on the main thread. Verify
+   Retina coordinate conversion, clipping, scrolling, resizing, window activation,
+   full screen, and movement between displays. Preserve hit testing, focus,
+   keyboard navigation, window dragging, and accessibility semantics.
+4. Give the material ownership of its appearance. Reusing the theme's 80–86%
+   tint over native glass could obscure the effect; tune that integration
+   separately. Rounded/floating chrome also needs workspace layout changes,
+   rather than a new color in `extension.toml` or theme JSON.
+5. Honor system appearance, Reduce Transparency, Increase Contrast, and Reduce
+   Motion through native APIs and change notifications. Supply solid surfaces
+   when required, and keep the existing rendering path on other platforms.
+   See [NSWorkspace accessibility settings](https://developer.apple.com/documentation/appkit/nsworkspace).
+
+If native composition cannot support the intended layout, a GPUI-rendered
+approximation is a separate approach: it would need an available backdrop texture,
+additional render passes, masks, and blur/refraction shading. It would not be
+Apple's native material and would require its own performance and accessibility
+work. Do not treat a custom shader as proof that native glass works.
+
+### Evidence required before calling it supported
+
+Build and run the prototype on macOS 27. Confirm the intended backdrop actually
+participates in the effect, foreground text stays sharp, and controls remain
+usable. Review light/dark appearance, busy/quiet backdrops, accessibility changes,
+inactive windows, full screen, and different display scales. Profile typing,
+scrolling, resizing, frame pacing, GPU cost, and memory against unmodified Zed.
+Restore the fallback and check unsupported OS/platform builds. Whole-window blur
+working, JSON schema passing, or a screenshot alone is insufficient evidence.
+
+The reported [macOS 27 blur issue #64284](https://github.com/zed-industries/zed/issues/64284)
+must be reproduced against the chosen Zed revision before diagnosing it. Fixing
+that blur path and introducing native Liquid Glass are separate changes.
+
+Source/API review: 22 October 2026. No native glass prototype has been built here.
+
 ## Release
 
 Version 0.5.0 is the local macOS Glass release under adeze's maintenance.
-The extension ID is `macos-glass`; repository metadata points to this project.
-CI validates themes only. The inherited workflow that opened release PRs against
-the original author's extension repository has been removed. Publishing to the
-Zed registry requires a separate, explicit release process.
+The extension ID is `macos-glass-theme`; repository metadata points to this project.
+The earlier local ID was `macos-glass`. Reinstall the development extension when
+testing this manifest so Zed registers the new ID; appearance names are unchanged.
+CI validates the theme, preset, and submission metadata; it does not publish.
+Follow [publishing/submission.md](publishing/submission.md) only after release is
+explicitly authorized. Creating a tag alone does not publish this extension.

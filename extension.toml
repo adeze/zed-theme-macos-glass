@@ -1,4 +1,4 @@
-id = "macos-glass"
+id = "macos-glass-theme"
 name = "macOS Glass"
 description = "macOS 27 Liquid Glass-inspired light and dark themes for Zed, with translucent chrome, layered tabs, blue accents, and opaque code surfaces."
 version = "0.5.0"
